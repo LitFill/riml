@@ -7,7 +7,7 @@ import System.Environment (getArgs)
 
 usage :: String
 usage = unlines
-    [ "Usage: impera file"
+    [ "Usage: riml [file|cmds]"
     , ""
     , "Commands:"
     , "    <no-command>  transpile the .riml file into .html file"
