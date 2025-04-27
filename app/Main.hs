@@ -3,19 +3,20 @@ module Main where
 import Lexer
 import Parser
 import AST
-import Data.Map qualified as M
 import System.Environment (getArgs)
 
-page :: HtmlNode
-page =
-    Element "div" ["container", "card", "bg-red-300"] (Just "app") (M.fromList [("src", "static/img.png"), ("href", "/id/1002/")])
-        [ TextNode "Hello From Riml!"
-        , Element "p" ["main"] Nothing (M.singleton "data-day" "sunday") [TextNode "Sunday"]
-        ]
-
 usage :: String
-usage = "Usage: impera file\n\nCommands:\n\tast file\tprint AST\n\trender file\tprint the rendered HTML\n\thelp\t\tprint this help"
+usage = unlines
+    [ "Usage: impera file"
+    , ""
+    , "Commands:"
+    , "    <no-command>  transpile the .riml file into .html file"
+    , "    ast file      print AST"
+    , "    render file   print the rendered HTML"
+    , "    help          print this help"
+    ]
 
+-- NOTE: Do I need a library for this, like optparse-applicative?
 handleArgs :: [String] -> IO ()
 handleArgs = \case
     [fname] -> translateFile fname
@@ -43,7 +44,10 @@ translateFile fname = do
     let tokens = alexScanTokens input
     let ast = parse tokens
     let rendered = render ast
-    writeFile (fname ++ ".html") rendered
+    -- TODO: output file name
+    let outname = fname ++ ".html"
+    writeFile outname "<!DOCTYPE html>\n"
+    appendFile outname rendered
 
 main :: IO ()
 main = getArgs >>= handleArgs
