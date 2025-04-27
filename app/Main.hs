@@ -5,6 +5,8 @@ import Parser
 import AST
 import System.Environment (getArgs)
 
+import Data.Text.IO qualified as TIO
+
 usage :: String
 usage = unlines
     [ "Usage: riml [file|cmds]"
@@ -36,7 +38,7 @@ renderFile fname = do
     input <- readFile fname
     let tokens = alexScanTokens input
     let ast = parse tokens
-    putStrLn $ render ast
+    TIO.putStrLn $ render ast
 
 translateFile :: FilePath -> IO ()
 translateFile fname = do
@@ -44,10 +46,9 @@ translateFile fname = do
     let tokens = alexScanTokens input
     let ast = parse tokens
     let rendered = render ast
-    -- TODO: output file name
     let outname = renameFile fname
     writeFile outname "<!DOCTYPE html>\n"
-    appendFile outname rendered
+    TIO.appendFile outname rendered
 
 renameFile :: String -> String
 renameFile = (++ "html") . reverse . dropWhile (/= '.') . reverse

@@ -29,5 +29,7 @@ executable riml
         , base ^>=4.21.0.0
         , array
         , containers
+        , prettyprinter
+        , text
     hs-source-dirs:   app
     default-language: GHC2024

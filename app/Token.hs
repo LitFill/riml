@@ -1,12 +1,14 @@
 module Token where
 
+import Data.Text (Text)
+
 data Token
-    = TIdent String -- div
-    | TString String -- "text"
-    | TDot -- .class
-    | THash -- #id
-    | TEq -- attr="value"
-    | TLbrace -- {
-    | TRbrace -- }
+    = TIdent Text  -- div
+    | TString Text -- "text"
+    | TDot         -- .class
+    | THash        -- #id
+    | TEq          -- attr="value"
+    | TLbrace      -- {
+    | TRbrace      -- }
 
     deriving (Show, Eq)
