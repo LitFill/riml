@@ -1,6 +1,7 @@
 # TODO
 
 - [x] generate element
+- [ ] add comment element or as a token
 - [ ] correctly generate void elements
     - [ ] modify the AST, and Parser
 - [ ] format and indent the output
