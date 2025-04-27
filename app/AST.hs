@@ -17,7 +17,7 @@ data HtmlNode
     deriving (Show, Eq)
 
 render :: HtmlNode -> String
-render (TextNode t) = t
+render (TextNode t) = f . f $ t where f = reverse . drop 1
 render (Element et cls mei eas cs) =
     "<" ++ et ++ attrs ++ ">" ++ children ++ "</" ++ et ++ ">"
   where

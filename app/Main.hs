@@ -45,9 +45,12 @@ translateFile fname = do
     let ast = parse tokens
     let rendered = render ast
     -- TODO: output file name
-    let outname = fname ++ ".html"
+    let outname = renameFile fname
     writeFile outname "<!DOCTYPE html>\n"
     appendFile outname rendered
+
+renameFile :: String -> String
+renameFile = (++ "html") . reverse . dropWhile (/= '.') . reverse
 
 main :: IO ()
 main = getArgs >>= handleArgs
