@@ -8,3 +8,5 @@
     - is there any libray for this?
 - [ ] escape the input
     - do i need a library for this?
+- [ ] `translateFile` output file naming
+    - currently it only appends `.html` after the input file name
