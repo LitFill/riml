@@ -5,8 +5,6 @@ import Lexer
 import Parser
 import System.Environment (getArgs)
 
-import Data.Text.IO qualified as TIO
-
 usage :: String
 usage = unlines
     [ "Usage: riml [file|cmds]"
@@ -48,7 +46,7 @@ translateFile fname = do
     let rendered = prettyRender ast
     let outname  = renameFile fname
     writeFile outname "<!DOCTYPE html>\n"
-    TIO.appendFile outname rendered
+    appendFile outname rendered
 
 renameFile :: String -> String
 renameFile =
