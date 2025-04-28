@@ -1,5 +1,6 @@
 {
 module Parser where
+
 import Token
 import AST
 import Data.Map qualified as Map (fromList, empty)

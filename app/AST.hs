@@ -4,6 +4,9 @@ module AST where
 import Data.Map  (Map)
 import Data.Text (Text)
 
+import Prettyprinter
+import Prettyprinter.Render.String (renderString)
+
 import Data.Map qualified as Map
 import Data.Text qualified as T
 
@@ -18,14 +21,44 @@ data HtmlNode
     | TextNode Text
     deriving (Show, Eq)
 
+instance Pretty HtmlNode where
+    pretty (TextNode t) = pretty t
+    pretty (Element tag classes mid attrs children) =
+        let opentag  = langle <> pretty tag <> ppAttrs classes mid attrs <> rangle
+            closetag = langle <> slash <> pretty tag <> rangle
+         in if null children then
+                group $ opentag <> closetag
+            else
+                vsep [ opentag
+                     , indent 4 . vsep $ map pretty children
+                     , closetag
+                     ]
+
+ppAttrs :: [Text] -> Maybe Text -> Map Text Text -> Doc ann
+ppAttrs classes mid attrs =
+    let
+        clsAttr  = [("class", T.show $ T.intercalate " " classes) | not.null $ classes]
+        idAttr   = [("id", T.show i) | Just i <- [mid], not.T.null $ i]
+        allAttrs = Map.toList attrs ++ clsAttr ++ idAttr
+     in if null allAttrs
+            then mempty
+            else space <> hsep (map ppAttr allAttrs)
+  where
+    ppAttr (k, v) = pretty k <> equals <>  (pretty v)
+
+prettyRender :: HtmlNode -> String
+prettyRender node =
+    let layoutOpts = LayoutOptions { layoutPageWidth = AvailablePerLine 80 1.0 }
+     in renderString . layoutPretty layoutOpts $ pretty node
+
 render :: HtmlNode -> Text
 render (TextNode t) = f . f $ t where f = T.reverse . T.drop 1
 render (Element et cls mei eas cs) =
     "<" <> et <> attrs <> ">" <> children <> "</" <> et <> ">"
   where
-    attrPairs = [ ("class", T.intercalate " " cls) | not (null cls) ] <>
-                [ ("id", i) | Just i <- [mei], not (T.null i) ] <>
+    attrPairs = [ ("class", T.show $ T.intercalate " " cls) | not (null cls) ] <>
+                [ ("id", T.show i) | Just i <- [mei], not (T.null i) ] <>
                 Map.toList eas
-    attrStr = T.intercalate " " $ map (\(k,v) -> k <> "=" <> v) attrPairs
-    attrs = if null attrPairs then "" else " " <> attrStr
-    children = T.concat $ map render cs
+    attrStr   = T.intercalate " " $ map (\(k,v) -> k <> "=" <> v) attrPairs
+    attrs     = if null attrPairs then "" else " " <> attrStr
+    children  = T.concat $ map render cs

@@ -38,7 +38,7 @@ renderFile fname = do
     input <- readFile fname
     let tokens = alexScanTokens input
     let ast = parse tokens
-    TIO.putStrLn $ render ast
+    putStrLn $ prettyRender ast
 
 translateFile :: FilePath -> IO ()
 translateFile fname = do
