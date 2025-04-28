@@ -43,10 +43,10 @@ renderFile fname = do
 translateFile :: FilePath -> IO ()
 translateFile fname = do
     input <- readFile fname
-    let tokens = alexScanTokens input
-    let ast = parse tokens
-    let rendered = render ast
-    let outname = renameFile fname
+    let tokens   = alexScanTokens input
+    let ast      = parse tokens
+    let rendered = prettyRender ast
+    let outname  = renameFile fname
     writeFile outname "<!DOCTYPE html>\n"
     TIO.appendFile outname rendered
 
