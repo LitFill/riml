@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+
 module AST where
 
 import Data.Map  (Map)
@@ -7,58 +8,83 @@ import Data.Text (Text)
 import Prettyprinter
 import Prettyprinter.Render.String (renderString)
 
-import Data.Map qualified as Map
+import Data.Map  qualified as Map
 import Data.Text qualified as T
 
 data HtmlNode
-    = Element
+    = TextNode Text
+    | Element
         { elTag      :: Text
         , elClasses  :: [Text]
         , elId       :: Maybe Text
         , elAttrs    :: Map Text Text
         , elChildren :: [HtmlNode]
         }
-    | TextNode Text
     deriving (Show, Eq)
 
 instance Pretty HtmlNode where
-    pretty (TextNode t) = pretty t
+    pretty (TextNode t) = pretty.f.f $ t
+      where f = T.reverse . T.drop 1
     pretty (Element tag classes mid attrs children) =
-        let opentag  = langle <> pretty tag <> ppAttrs classes mid attrs <> rangle
-            closetag = langle <> slash <> pretty tag <> rangle
-         in if null children then
-                group $ opentag <> closetag
-            else
-                vsep [ opentag
-                     , indent 4 . vsep $ map pretty children
-                     , closetag
-                     ]
+        let
+            allAttrs = ppAttrs classes mid attrs
+            opentag  = langle <> pretty tag <> allAttrs   <> rangle
+            closetag = langle <> slash      <> pretty tag <> rangle
+         in
+         if   null children
+         then group $ opentag <> closetag
+         else vsep [ opentag
+                  , indent 4 . vsep $ map pretty children
+                  , closetag ]
 
 ppAttrs :: [Text] -> Maybe Text -> Map Text Text -> Doc ann
 ppAttrs classes mid attrs =
     let
-        clsAttr  = [("class", T.show $ T.intercalate " " classes) | not.null $ classes]
-        idAttr   = [("id", T.show i) | Just i <- [mid], not.T.null $ i]
+        clsAttr  = [ ("class", T.show (T.intercalate " " classes))
+                   | not . null $ classes ]
+        idAttr   = [ ("id",    T.show i)
+                   | Just i <- [mid]
+                   , not . T.null $ i ]
         allAttrs = Map.toList attrs ++ clsAttr ++ idAttr
-     in if null allAttrs
-            then mempty
-            else space <> hsep (map ppAttr allAttrs)
+     in
+     if null allAttrs
+        then mempty
+        else space <> hsep (map ppAttr allAttrs)
   where
-    ppAttr (k, v) = pretty k <> equals <>  (pretty v)
+    ppAttr (k, v) = pretty k <> equals <> pretty v
 
 prettyRender :: HtmlNode -> String
 prettyRender node =
-    let layoutOpts = LayoutOptions { layoutPageWidth = AvailablePerLine 80 1.0 }
-     in renderString . layoutPretty layoutOpts $ pretty node
+    let layoutOpts =
+            LayoutOptions
+                { layoutPageWidth = AvailablePerLine 80 1.0 }
+     in renderString
+        . layoutPretty layoutOpts
+        $ pretty node
 
 render :: HtmlNode -> Text
-render (TextNode t) = f . f $ t where f = T.reverse . T.drop 1
+render (TextNode t) =
+    f . f $ t where f = T.reverse . T.drop 1
 render (Element et cls mei eas cs) =
-    "<" <> et <> attrs <> ">" <> children <> "</" <> et <> ">"
+    "<" <> et <> attrs <> ">"
+    <> children
+    <> "</" <> et <> ">"
   where
-    attrPairs = [ ("class", T.show $ T.intercalate " " cls) | not (null cls) ] <>
-                [ ("id", T.show i) | Just i <- [mei], not (T.null i) ] <>
-                Map.toList eas
-    attrStr   = T.intercalate " " $ map (\(k,v) -> k <> "=" <> v) attrPairs
-    attrs     = if null attrPairs then "" else " " <> attrStr
-    children  = T.concat $ map render cs
+    attrPairs =
+        [ ("class", T.show $ T.intercalate " " cls)
+        | not (null cls)
+        ] <>
+        [ ("id", T.show i)
+        | Just i <- [mei]
+        , not (T.null i)
+        ] <> Map.toList eas
+
+    pairstrfy (k, v) = k <> "=" <> v
+    attrStr =
+        T.intercalate " "
+        $ map pairstrfy attrPairs
+    attrs =
+        if null attrPairs
+            then ""
+            else " " <> attrStr
+    children = T.concat $ map render cs
