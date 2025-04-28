@@ -21,10 +21,10 @@ usage = unlines
 -- NOTE: Do I need a library for this, like optparse-applicative?
 handleArgs :: [String] -> IO ()
 handleArgs = \case
-    [fname] -> translateFile fname
-    ["ast", fname] -> printAst fname
-    ["render", fname] -> renderFile fname
-    _ -> putStrLn usage
+    [fname]           -> translateFile fname
+    ["ast",    fname] -> printAst      fname
+    ["render", fname] -> renderFile    fname
+    _                 -> putStrLn      usage
 
 printAst :: FilePath -> IO ()
 printAst fname = do
