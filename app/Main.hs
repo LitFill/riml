@@ -1,8 +1,8 @@
 module Main where
 
+import AST
 import Lexer
 import Parser
-import AST
 import System.Environment (getArgs)
 
 import Data.Text.IO qualified as TIO
