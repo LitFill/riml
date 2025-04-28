@@ -51,7 +51,11 @@ translateFile fname = do
     TIO.appendFile outname rendered
 
 renameFile :: String -> String
-renameFile = (++ "html") . reverse . dropWhile (/= '.') . reverse
+renameFile =
+    (++ "html")
+    . reverse
+    . dropWhile (/= '.')
+    . reverse
 
 main :: IO ()
 main = getArgs >>= handleArgs
