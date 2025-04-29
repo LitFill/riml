@@ -55,7 +55,7 @@ ppAttrs classes mid attrs =
         idAttr   = [ ("id",    T.show i)
                    | Just i <- [mid]
                    , not . T.null $ i ]
-        allAttrs = Map.toList attrs ++ clsAttr ++ idAttr
+        allAttrs = clsAttr ++ idAttr ++ Map.toList attrs
      in
      if null allAttrs
         then mempty
