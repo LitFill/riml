@@ -1,6 +1,6 @@
 # riml
 
-Rust's maud Inspired htML
+Rust's maud Inspired htML DSL
 
 ## Example
 
@@ -51,3 +51,15 @@ currently generates:
     </body>
 </html>
 ```
+
+## general syntax
+
+the general syntax is:
+
+- `tag [.class]* [#id] [attr="val"]* { [childern]* }` for elements with ending tag `</tag>`
+- `tag [.class]* [#id] [attr="val"]* ;` for elements without
+
+where:
+
+- `[...]` is optional
+- `*` is zero or more

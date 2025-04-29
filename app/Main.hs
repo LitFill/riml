@@ -10,10 +10,10 @@ usage = unlines
     [ "Usage: riml [file|cmds]"
     , ""
     , "Commands:"
-    , "    <no-command>  transpile the .riml file into .html file"
-    , "    ast file      print AST"
-    , "    render file   print the rendered HTML"
-    , "    help          print this help"
+    , "    <file>         transpile the .riml file into .html file"
+    , "    ast <file>     print AST"
+    , "    render <file>  print the rendered HTML"
+    , "    help           print this help"
     ]
 
 -- NOTE: Do I need a library for this, like optparse-applicative?
