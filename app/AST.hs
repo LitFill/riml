@@ -20,6 +20,7 @@ data Node = Node
 
 data HtmlNode
     = TextNode Text
+    | CommentNode Text
     | VoidNode Node
     | Element
         { elNode     :: Node
@@ -30,6 +31,10 @@ data HtmlNode
 instance Pretty HtmlNode where
     pretty (TextNode t) = pretty.f.f $ t
       where f = T.reverse . T.drop 1
+    pretty (CommentNode t) =
+        let t' = T.dropWhile (== ' ') t
+            comment = "!-- " <> t' <> " --"
+         in langle <> pretty comment <> rangle
     pretty (VoidNode (Node tag classes mid attrs)) =
         langle
         <> pretty tag
@@ -75,6 +80,8 @@ prettyRender node =
 render :: HtmlNode -> Text
 render (TextNode t) =
     f . f $ t where f = T.reverse . T.drop 1
+render (CommentNode t) =
+    "<!-- " <> t <> "-->"
 render (VoidNode (Node et cls mei eas)) =
     "<" <> et <> attrs <> ">"
   where

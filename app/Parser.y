@@ -11,14 +11,15 @@ import Data.Map qualified as Map (fromList, empty)
 %error     { parseError }
 
 %token
-    IDENT  { TIdent $$  }
-    STRING { TString $$ }
-    '.'    { TDot       }
-    '#'    { THash      }
-    '='    { TEq        }
-    '{'    { TLbrace    }
-    '}'    { TRbrace    }
-    ';'    { TSemicolon }
+    IDENT   { TIdent $$   }
+    STRING  { TString $$  }
+    COMMENT { TComment $$ }
+    '.'     { TDot        }
+    '#'     { THash       }
+    '='     { TEq         }
+    '{'     { TLbrace     }
+    '}'     { TRbrace     }
+    ';'     { TSemicolon  }
 
 %%
 
@@ -29,14 +30,15 @@ Elements : Element Elements { $1 : $2 }
          |                  { [] }
 
 Element : IDENT Classes Id Attrs '{' Elements '}' { Element (Node $1 $2 $3 $4) $6 }
-        | IDENT '{' Elements '}' { Element (Node $1 [] Nothing Map.empty) $3 }
-        | IDENT '{' '}' { Element (Node $1 [] Nothing Map.empty) [] }
-        | IDENT Classes Id Attrs ';' { VoidNode (Node $1 $2 $3 $4) }
-        | IDENT ';' { VoidNode (Node $1 [] Nothing Map.empty) }
-        | STRING { TextNode $1 }
+        | IDENT '{' Elements '}'                  { Element (Node $1 [] Nothing Map.empty) $3 }
+        | IDENT '{' '}'                           { Element (Node $1 [] Nothing Map.empty) [] }
+        | IDENT Classes Id Attrs ';'              { VoidNode (Node $1 $2 $3 $4) }
+        | IDENT ';'                               { VoidNode (Node $1 [] Nothing Map.empty) }
+        | COMMENT                                 { CommentNode $1 }
+        | STRING                                  { TextNode $1 }
 
 Classes : Class Classes { $1 : $2 }
-        |                   { [] }
+        |               { [] }
 
 Class : '.' IDENT { $2 }
 
