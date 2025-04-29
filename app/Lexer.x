@@ -16,6 +16,7 @@ tokens :-
     "="             { \_ -> TEq }              -- Sama dengan
     "{"             { \_ -> TLbrace }          -- Kurung kurawal buka
     "}"             { \_ -> TRbrace }          -- Kurung kurawal tutup
+    ";"             { \_ -> TSemicolon }       -- Titik Koma
 
 {
 }

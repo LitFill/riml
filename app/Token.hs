@@ -10,5 +10,6 @@ data Token
     | TEq          -- attr="value"
     | TLbrace      -- {
     | TRbrace      -- }
+    | TSemicolon   -- ;
 
     deriving (Show, Eq)

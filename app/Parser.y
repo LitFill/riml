@@ -18,6 +18,7 @@ import Data.Map qualified as Map (fromList, empty)
     '='    { TEq        }
     '{'    { TLbrace    }
     '}'    { TRbrace    }
+    ';'    { TSemicolon }
 
 %%
 
@@ -27,9 +28,11 @@ Document : Element { $1 }
 Elements : Element Elements { $1 : $2 }
          |                  { [] }
 
-Element : IDENT Classes Id Attrs '{' Elements '}' { Element $1 $2 $3 $4 $6 }
-        | IDENT '{' Elements '}' { Element $1 [] Nothing Map.empty $3 }
-        | IDENT '{' '}' { Element $1 [] Nothing Map.empty [] }
+Element : IDENT Classes Id Attrs '{' Elements '}' { Element (Node $1 $2 $3 $4) $6 }
+        | IDENT '{' Elements '}' { Element (Node $1 [] Nothing Map.empty) $3 }
+        | IDENT '{' '}' { Element (Node $1 [] Nothing Map.empty) [] }
+        | IDENT Classes Id Attrs ';' { VoidNode (Node $1 $2 $3 $4) }
+        | IDENT ';' { VoidNode (Node $1 [] Nothing Map.empty) }
         | STRING { TextNode $1 }
 
 Classes : Class Classes { $1 : $2 }
