@@ -27,5 +27,22 @@ html lang="id" {
 currently generates:
 
 ```html
-<html lang="id"><head><title>"Judul"</title><link rel="stylesheet" src="style.css"></link></head><body><h1 class="main" id="root" visible="true">"Halo Semuanya"</h1><div class="container" id="app"><p class="bg-red-300 note card" id="ppp" data-day="sunday">"Sunday"</p></div></body></html>
+<html lang="id">
+    <head>
+        <title>
+            Judul
+        </title>
+        <link rel="stylesheet" src="style.css"></link>
+    </head>
+    <body>
+        <h1 visible="true" class="main" id="root">
+            Halo Semuanya
+        </h1>
+        <div class="container" id="app">
+            <p data-day="sunday" class="bg-red-300 note card" id="ppp">
+                Sunday
+            </p>
+        </div>
+    </body>
+</html>
 ```
