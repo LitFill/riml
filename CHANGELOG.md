@@ -2,15 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased]
+## [1.0.0.4] - 2025-04-29
+
+### 🚀 Features
+
+- *(all)* Add support for comment (single line)
+- *(all)* Add support for comment (single line)
 
 ### 📚 Documentation
 
 - *(version)* Document the current version
+- *(syntax)* Add vim syntax file
+- *(readme)* Update code adding comment
 
 ### ⚙️ Miscellaneous Tasks
 
 - *(changelog)* Update it
+- *(todo)* Tick comment
 
 ## [1.0.0.3] - 2025-04-29
 
