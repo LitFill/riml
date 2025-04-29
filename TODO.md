@@ -1,7 +1,7 @@
 # TODO
 
 - [x] generate element
-- [ ] add comment element or as a token
+- [x] add comment element or as a token
 - [x] correctly generate void elements, eg. \<link>
     - [x] modify the AST, and Parser
     - I use semicolon for void element
