@@ -17,9 +17,13 @@ usage = unlines
     , "    version        print the version"
     ]
 
+version :: String
+version = "riml v1.0.0.3"
+
 -- NOTE: Do I need a library for this, like optparse-applicative?
 handleArgs :: [String] -> IO ()
 handleArgs = \case
+    ["version"]       -> putStrLn      version
     [fname]           -> translateFile fname
     ["ast",    fname] -> printAst      fname
     ["render", fname] -> renderFile    fname
