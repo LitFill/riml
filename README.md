@@ -10,7 +10,7 @@ this snippet:
 html lang="id" {
     head {
         title { "Judul" }
-        link rel="stylesheet" src="style.css" {}
+        link rel="stylesheet" src="style.css";
     }
     body {
         h1 .main #root visible="true" {
@@ -19,6 +19,8 @@ html lang="id" {
 
         div .container #app {
             p .bg-red-300 .note .card #ppp data-day="sunday" { "Sunday" }
+            br;
+            img .logo .image #logo src="static/logo.png";
         }
     }
 }
@@ -27,12 +29,13 @@ html lang="id" {
 currently generates:
 
 ```html
+<!DOCTYPE html>
 <html lang="id">
     <head>
         <title>
             Judul
         </title>
-        <link rel="stylesheet" src="style.css"></link>
+        <link rel="stylesheet" src="style.css">
     </head>
     <body>
         <h1 visible="true" class="main" id="root">
@@ -42,6 +45,8 @@ currently generates:
             <p data-day="sunday" class="bg-red-300 note card" id="ppp">
                 Sunday
             </p>
+            <br>
+            <img src="static/logo.png" class="logo image" id="logo">
         </div>
     </body>
 </html>
