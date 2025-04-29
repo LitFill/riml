@@ -14,6 +14,7 @@ usage = unlines
     , "    ast <file>     print AST"
     , "    render <file>  print the rendered HTML"
     , "    help           print this help"
+    , "    version        print the version"
     ]
 
 -- NOTE: Do I need a library for this, like optparse-applicative?
