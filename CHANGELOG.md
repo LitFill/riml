@@ -8,6 +8,10 @@ All notable changes to this project will be documented in this file.
 
 - *(version)* Document the current version
 
+### ⚙️ Miscellaneous Tasks
+
+- *(changelog)* Update it
+
 ## [1.0.0.3] - 2025-04-29
 
 ### 🚀 Features
