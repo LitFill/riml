@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## [unreleased]
 
+### ⚙️ Miscellaneous Tasks
+
+- *(changes)* Update CHANGELOG.md
+
+## [1.0.1.0] - 2025-05-04
+
 ### 🚀 Features
 
 - *(Main)* Use optparse-applicative
