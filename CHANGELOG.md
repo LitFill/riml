@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [unreleased]
+
+### 🚀 Features
+
+- *(Main)* Use optparse-applicative
+
+### ⚙️ Miscellaneous Tasks
+
+- *(changelog)* Git cliff
+- *(version)* Bump version
+
 ## [1.0.0.4] - 2025-04-29
 
 ### 🚀 Features
