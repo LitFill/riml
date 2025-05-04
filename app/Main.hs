@@ -44,7 +44,7 @@ subcmdP = O.subparser (astcmd <> rendercmd <> transpilecmd)
     transpilecmd = mkcmd "transpile" transpilecmdP "Transpile input file to html."
 
 version :: String
-version = "riml v1.0.0.4"
+version = "riml v1.0.1.0"
 
 versionflagP :: O.Parser (a -> a)
 versionflagP = O.infoOption version
